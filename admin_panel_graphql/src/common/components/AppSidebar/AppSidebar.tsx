@@ -16,8 +16,8 @@ export const AppSidebar = () => {
         <>
             <nav className={styles.sidebar}>
                 <ul className={styles.list}>
-                    <li className={`${styles.item} ${pathname === '/' ? styles.itemActive : ''}`}>
-                        <Link className={styles.link} href={'/'}>
+                    <li className={`${styles.item} ${pathname === 'usersList' ? styles.itemActive : ''}`}>
+                        <Link className={styles.link} href={'/usersList'}>
                             <Image src={personOutline} width={24} height={24} alt=""/>
                             <span className={styles.notMobile}>Users list</span>
                         </Link>

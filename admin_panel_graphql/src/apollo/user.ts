@@ -6,6 +6,11 @@ export const GET_USERS = gql`
             users{
                 id
                 userName
+                createdAt
+                profile {
+                    userName
+                    createdAt
+                }
             }
         }
     }

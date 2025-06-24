@@ -1,5 +1,6 @@
 .inputContainer {
   position: relative;
+  margin-bottom: 15px;
 }
 
 .input{
@@ -20,10 +21,4 @@
   position: absolute;
   top: 6px;
   left: 10px;
-}
-
-@media(max-width: 768px) {
-  .input {
-    width: 380px
-  }
 }
