@@ -14,7 +14,7 @@
   button {
     position: absolute;
     right: 0;
-    margin-right: 210px;
+    margin-right: 200px;
   }
 }
 
@@ -23,13 +23,12 @@
   background-color: #333333;
 }
 
-
 .tableWrapper th,
 .tableWrapper td {
   padding: 8px;
   text-align: left;
-  white-space: nowrap; /* Предотвращаем перенос содержимого на новую строку */
-  overflow: hidden; /* Скрыть содержимое, которое не помещается */
-  text-overflow: ellipsis; /* Отображаем многоточие для скрытого текста */
-  width: 170px; /* Задаем фиксированную ширину колонок */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 170px;
 }

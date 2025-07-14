@@ -1,0 +1,23 @@
+.container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 121px;
+  width: 178px;
+  background-color: #333333;
+  padding: 10px;
+}
+
+.deleteUser,
+.banUser,
+.moreInformation {
+  display: flex;
+  align-items: center;
+}
+
+.deleteUser button,
+.banUser button,
+.moreInformation button {
+  margin-left: 5px;
+}

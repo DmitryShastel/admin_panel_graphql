@@ -6,26 +6,43 @@ import {Pagination} from "@/common/components/Pagination/Pagination";
 import {useQuery} from "@apollo/client";
 import {GET_USERS} from "@/apollo/user";
 import {useState} from "react";
+import {ManagementUserAction} from "@/features/UsersList/ManagementUserAction/ManagementUserAction";
+import {SearchSelect} from "@/features/SearchSelect";
 
 
 export const UsersList = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(8);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage, setItemsPerPage] = useState<number>(8);
+    const [open, setOpen] = useState<boolean>(false)
+    const [searchTerm, setSearchTerm] = useState<string>('')
 
     const {data, loading} = useQuery(GET_USERS, {variables: {pageSize: 100}})
-    const users = data?.getUsers?.users || []
+    const allUsers  = data?.getUsers?.users || []
+
+    const filteredUsers = allUsers .filter(user =>
+        user.userName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const paginatedUsers = users.slice(startIndex, endIndex);
+    const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
     const onPageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
 
+    const onModalOpen = () => {
+        setOpen(prevState => !prevState)
+    }
+
     const handleItemsPerPageChange = (newItemsPerPage) => {
         setItemsPerPage(newItemsPerPage);
         setCurrentPage(1)
+    };
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+        setCurrentPage(1);
     };
 
     const columns = [
@@ -57,28 +74,40 @@ export const UsersList = () => {
     return (
         <div className={styles.container}>
             <div className={styles.searchBar}>
-                <SearchInput/>
-                {/*Не сделан*/}
-                <p>Select</p>
+                <SearchInput value={searchTerm} callBack={handleSearchChange}/>
+                <SearchSelect/>
             </div>
             <div className={styles.table}>
                 {loading ? (
                     <p>Loading...</p>
                 ) : (
-                    data ? (
-                        <Sortable columns={columns} data={paginatedUsers} sortTypes={sortTypes}/>
+                    allUsers.length > 0 ? (
+                        <>
+                            <Sortable
+                                columns={columns}
+                                data={paginatedUsers}
+                                sortTypes={sortTypes}
+                                callbackOpen={onModalOpen}
+                            />
+                            {filteredUsers.length === 0 && (
+                                <p>No users found matching your search</p>
+                            )}
+                        </>
                     ) : (
                         <p>No data available</p>
                     )
                 )}
+                {open && <ManagementUserAction/>}
             </div>
             <div className={styles.pagination}>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={Math.ceil(users.length / itemsPerPage)}
-                    itemsPerPage={itemsPerPage}
-                    onItemsPerPageChange={handleItemsPerPageChange}
-                    onPageChange={onPageChange}/>
+                {filteredUsers.length > 0 && (
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={Math.ceil(filteredUsers.length / itemsPerPage)}
+                        itemsPerPage={itemsPerPage}
+                        onItemsPerPageChange={handleItemsPerPageChange}
+                        onPageChange={onPageChange}/>
+                )}
             </div>
         </div>
     );

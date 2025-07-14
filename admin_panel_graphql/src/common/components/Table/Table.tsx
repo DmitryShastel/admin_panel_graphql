@@ -1,6 +1,6 @@
 'use client'
-import { BiSortAlt2, BiSortDown, BiSortUp } from 'react-icons/bi';
-import { Column, SortByFn, useSortBy, useTable } from 'react-table';
+import {BiSortAlt2, BiSortDown, BiSortUp} from 'react-icons/bi';
+import {Column, SortByFn, useSortBy, useTable} from 'react-table';
 import Image from 'next/image';
 import styles from './table.module.scss'
 import moreHorizontalOutline from "@/assets/svg/moreHorizontalOutline.svg";
@@ -17,16 +17,18 @@ type Props<Data extends object> = {
     columns: Column<Data>[],
     data: Data[],
     sortTypes: Record<string, SortByFn<Data>>
+    callbackOpen: () => void
 }
 
-export const Sortable = <Data extends object>({ columns, data, sortTypes }) => {
+export const Sortable = <Data extends object>({columns, data, sortTypes, callbackOpen}) => {
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow
-    } = useTable({ columns, data, sortTypes }, useSortBy);
+        prepareRow,
+    } = useTable({columns, data, sortTypes}, useSortBy);
+
 
     return (
         <>
@@ -42,12 +44,12 @@ export const Sortable = <Data extends object>({ columns, data, sortTypes }) => {
                                         <span>
                                             {col.isSorted ? (
                                                 col.isSortedDesc ? (
-                                                    <BiSortUp />
+                                                    <BiSortUp/>
                                                 ) : (
-                                                    <BiSortDown />
+                                                    <BiSortDown/>
                                                 )
                                             ) : (
-                                                <BiSortAlt2 />
+                                                <BiSortAlt2/>
                                             )}
                                         </span>
                                     )}
@@ -67,7 +69,7 @@ export const Sortable = <Data extends object>({ columns, data, sortTypes }) => {
                                         {index === row.cells.length - 1 ? (
                                             <>
                                                 {cell.render('Cell')}
-                                                <button>
+                                                <button onClick={callbackOpen}>
                                                     <Image src={moreHorizontalOutline} width={24} height={24} alt=""/>
                                                 </button>
                                             </>
