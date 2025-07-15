@@ -5,7 +5,6 @@ import Image from 'next/image';
 import styles from './table.module.scss'
 import moreHorizontalOutline from "@/assets/svg/moreHorizontalOutline.svg";
 
-
 type DefaultColumn = {
     id: string,
     Header: string,
@@ -16,11 +15,11 @@ type DefaultColumn = {
 type Props<Data extends object> = {
     columns: Column<Data>[],
     data: Data[],
-    sortTypes: Record<string, SortByFn<Data>>
-    callbackOpen: () => void
+    sortTypes: Record<string, SortByFn<Data>>,
+    callbackOpen: (userId: string, event: React.MouseEvent) => void
 }
 
-export const Sortable = <Data extends object>({columns, data, sortTypes, callbackOpen}) => {
+export const Sortable = <Data extends {id: string}>({columns, data, sortTypes, callbackOpen}) => {
     const {
         getTableProps,
         getTableBodyProps,
@@ -29,59 +28,55 @@ export const Sortable = <Data extends object>({columns, data, sortTypes, callbac
         prepareRow,
     } = useTable({columns, data, sortTypes}, useSortBy);
 
-
     return (
-        <>
-            <div className={styles.tableWrapper}>
-                <table {...getTableProps()}>
-                    <thead>
-                    {headerGroups.map((hG) => (
-                        <tr {...hG.getHeaderGroupProps()}>
-                            {hG.headers.map((col) => (
-                                <th {...col.getHeaderProps(col.getSortByToggleProps())}>
-                                    {col.render('Header')}{' '}
-                                    {col.canSort && (
-                                        <span>
-                                            {col.isSorted ? (
-                                                col.isSortedDesc ? (
-                                                    <BiSortUp/>
-                                                ) : (
-                                                    <BiSortDown/>
-                                                )
+        <div className={styles.tableWrapper}>
+            <table {...getTableProps()}>
+                <thead>
+                {headerGroups.map((hG) => (
+                    <tr {...hG.getHeaderGroupProps()}>
+                        {hG.headers.map((col) => (
+                            <th {...col.getHeaderProps(col.getSortByToggleProps())}>
+                                {col.render('Header')}{' '}
+                                {col.canSort && (
+                                    <span>
+                                        {col.isSorted ? (
+                                            col.isSortedDesc ? (
+                                                <BiSortUp/>
                                             ) : (
-                                                <BiSortAlt2/>
-                                            )}
-                                        </span>
-                                    )}
-                                </th>
+                                                <BiSortDown/>
+                                            )
+                                        ) : (
+                                            <BiSortAlt2/>
+                                        )}
+                                    </span>
+                                )}
+                            </th>
+                        ))}
+                    </tr>
+                ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                {rows.map((row) => {
+                    prepareRow(row);
+                    return (
+                        <tr {...row.getRowProps()}>
+                            {row.cells.map((cell, index) => (
+                                <td {...cell.getCellProps()}>
+                                    {index === row.cells.length - 1 ? (
+                                        <>
+                                            {cell.render('Cell')}
+                                            <button onClick={(e) => callbackOpen(row.original.id, e)}>
+                                                <Image src={moreHorizontalOutline} width={24} height={24} alt=""/>
+                                            </button>
+                                        </>
+                                    ) : cell.render('Cell')}
+                                </td>
                             ))}
                         </tr>
-                    ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                    {rows.map((row) => {
-                        prepareRow(row);
-
-                        return (
-                            <tr {...row.getRowProps()}>
-                                {row.cells.map((cell, index) => (
-                                    <td {...cell.getCellProps()}>
-                                        {index === row.cells.length - 1 ? (
-                                            <>
-                                                {cell.render('Cell')}
-                                                <button onClick={callbackOpen}>
-                                                    <Image src={moreHorizontalOutline} width={24} height={24} alt=""/>
-                                                </button>
-                                            </>
-                                        ) : cell.render('Cell')}
-                                    </td>
-                                ))}
-                            </tr>
-                        )
-                    })}
-                    </tbody>
-                </table>
-            </div>
-        </>
+                    )
+                })}
+                </tbody>
+            </table>
+        </div>
     );
 };

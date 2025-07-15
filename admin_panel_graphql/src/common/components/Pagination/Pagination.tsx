@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import styles from './pagination.module.scss';
 
@@ -34,3 +35,7 @@ export const Pagination = ({ totalPages, currentPage, onPageChange, itemsPerPage
         </div>
     );
 };
+
+
+
+

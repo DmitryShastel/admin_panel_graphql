@@ -8,18 +8,22 @@ import {GET_USERS} from "@/apollo/user";
 import {useState} from "react";
 import {ManagementUserAction} from "@/features/UsersList/ManagementUserAction/ManagementUserAction";
 import {SearchSelect} from "@/features/SearchSelect";
-
+import {DeleteUserModal} from "@/features/UsersList/ManagementUserAction/DeleteUser/DeleteUserModal";
+import {columns, sortTypes} from "@/common/utils/utils";
 
 export const UsersList = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [itemsPerPage, setItemsPerPage] = useState<number>(8);
-    const [open, setOpen] = useState<boolean>(false)
-    const [searchTerm, setSearchTerm] = useState<string>('')
+    const [openActionModal, setOpenActionModal] = useState<string | null>(null);
+    const [modalPosition, setModalPosition] = useState({top: 0, left: 0});
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+    const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
-    const {data, loading} = useQuery(GET_USERS, {variables: {pageSize: 100}})
-    const allUsers  = data?.getUsers?.users || []
+    const {data, loading} = useQuery(GET_USERS, {variables: {pageSize: 100}});
+    const allUsers = data?.getUsers?.users || [];
 
-    const filteredUsers = allUsers .filter(user =>
+    const filteredUsers = allUsers.filter(user =>
         user.userName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -29,47 +33,36 @@ export const UsersList = () => {
 
     const onPageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
+        // setOpenModalId(null); // Закрываем модалку при смене страницы
     };
-
-    const onModalOpen = () => {
-        setOpen(prevState => !prevState)
-    }
 
     const handleItemsPerPageChange = (newItemsPerPage) => {
         setItemsPerPage(newItemsPerPage);
-        setCurrentPage(1)
+        setCurrentPage(1);
+        // setOpenModalId(null);
     };
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
         setCurrentPage(1);
+        // setOpenModalId(null);
     };
 
-    const columns = [
-        {
-            Header: 'User ID',
-            accessor: 'id',
-        },
-        {
-            Header: 'Profile link',
-            accessor: 'profile.userName',
-        },
-        {
-            Header: 'Username',
-            accessor: 'userName',
-        },
-        {
-            Header: 'Date added',
-            accessor: 'createdAt',
-        },
-    ];
-
-    const sortTypes = {
-        string: (rowA, rowB, columnId, desc) => {
-            const [a, b] = [rowA.values[columnId], rowB.values[columnId]] as [string, string];
-            return a.localeCompare(b, 'en');
-        }
+    const handleOpenActionModal = (userId: any, event: React.MouseEvent) => {
+        const buttonRect = event.currentTarget.getBoundingClientRect();
+        setModalPosition({
+            top: buttonRect.bottom + window.scrollY,
+            left: buttonRect.left + window.scrollX
+        });
+        setOpenActionModal(openActionModal === userId ? null : userId);
     };
+
+    const handleOpenDeleteModal = (userId: number | null) => {
+        setOpenDeleteModal(true)
+        setOpenActionModal(null)
+        setSelectedUserId(userId);
+    }
+
 
     return (
         <div className={styles.container}>
@@ -87,7 +80,7 @@ export const UsersList = () => {
                                 columns={columns}
                                 data={paginatedUsers}
                                 sortTypes={sortTypes}
-                                callbackOpen={onModalOpen}
+                                callbackOpen={handleOpenActionModal}
                             />
                             {filteredUsers.length === 0 && (
                                 <p>No users found matching your search</p>
@@ -97,8 +90,30 @@ export const UsersList = () => {
                         <p>No data available</p>
                     )
                 )}
-                {open && <ManagementUserAction/>}
+                {openActionModal && (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: `${modalPosition.top}px`,
+                            left: `${modalPosition.left}px`,
+                            zIndex: 1000
+                        }}
+                    >
+                        <ManagementUserAction
+                            openDeleteModal={() => {
+                                const userToDelete = paginatedUsers.find(user => user.id === openActionModal);
+                                handleOpenDeleteModal(userToDelete?.id || null);
+                            }}
+                        />
+                    </div>
+                )}
             </div>
+            {openDeleteModal && <DeleteUserModal
+                open={openDeleteModal}
+                onClose={() => setOpenDeleteModal(false)}
+                userId={selectedUserId}
+            />
+            }
             <div className={styles.pagination}>
                 {filteredUsers.length > 0 && (
                     <Pagination
