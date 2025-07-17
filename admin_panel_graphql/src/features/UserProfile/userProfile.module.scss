@@ -1,0 +1,85 @@
+.container{
+  height: 730px;
+  width: 100%;
+}
+
+.userProfileInfo{
+  height: 30%;
+  width: 100%;
+}
+
+.backUserList{
+  margin-bottom: 10px;
+}
+
+.backUserList span{
+  margin-left: 10px;
+  font-family: 'Inter';
+  font-weight: 500;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.userLink{
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.userLinkText{
+  display: flex;
+  flex-direction: column;
+}
+
+.userLinkText h1{
+  font-family: 'Inter';
+  font-weight: 700;
+  font-style: inherit;
+  font-size: 20px;
+}
+
+.userLinkText span{
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 400;
+  text-decoration: underline
+}
+
+.roundedIcon{
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #4CAF50;
+  position: relative;
+  overflow: hidden;
+}
+
+.link{}
+
+.userData{
+  display: flex;
+  margin-top: 20px;
+}
+
+.userId p{
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 16px;
+  color: #8d9094;
+}
+
+.userCreate{
+  margin-left: 60px;
+}
+
+.userCreate p {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 16px;
+  color: #8d9094;
+}
+
+.tabs{
+  height: 70%;
+  width: 100%;
+}

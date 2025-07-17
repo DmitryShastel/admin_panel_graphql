@@ -3,12 +3,15 @@ import personRemoveOutline from "@/assets/svg/personRemoveOutline.svg";
 import moreHorizontalOutline from "@/assets/svg/moreHorizontalOutline.svg";
 import block from "@/assets/svg/block.svg";
 import Image from 'next/image';
+import Link from "next/link";
 
 type Props = {
     openDeleteModal: () => void
+    userId: number | string | null;
 }
 
-export const ManagementUserAction = ({openDeleteModal}: Props) => {
+export const ManagementUserAction = ({openDeleteModal, userId}: Props) => {
+
 
     return (
         <div className={styles.container}>
@@ -22,7 +25,9 @@ export const ManagementUserAction = ({openDeleteModal}: Props) => {
             </div>
             <div className={styles.moreInformation}>
                 <Image src={moreHorizontalOutline} width={24} height={24} alt=""/>
-                <button>More Information</button>
+                <Link href={`/usersList/${userId}`}>
+                    <button>More Information</button>
+                </Link>
             </div>
         </div>
     );

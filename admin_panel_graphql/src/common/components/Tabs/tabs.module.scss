@@ -1,0 +1,56 @@
+.tabsContainer {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.tabsHeader {
+  display: flex;
+  position: relative;
+  justify-content: space-around;
+  gap: 16px;
+}
+
+.tabsHeader::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: #e0e0e0;
+  z-index: 0;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  position: relative;
+  white-space: nowrap;
+  text-align: center;
+  z-index: 1;
+
+  &.active {
+    color: #0070f3;
+    font-weight: bold;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: #0070f3;
+      z-index: 2;
+    }
+  }
+}
+
+.tabContent {
+  padding: 20px 0;
+}
