@@ -88,7 +88,7 @@ export const UsersList = () => {
                     <div style={{
                         position: 'absolute',
                         top: `${modalPosition.top}px`,
-                        left: `${modalPosition.left}px`,
+                        left: `${modalPosition.left - 100}px`,
                         zIndex: 1000
                     }}>
                         <ManagementUserAction
