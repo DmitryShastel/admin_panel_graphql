@@ -13,10 +13,18 @@
   }
   button {
     position: absolute;
-    right: 0;
-    margin-right: 200px;
+    right: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  td:last-child {
+    position: relative;
   }
 }
+
 
 .tableWrapper thead {
   height: 25px;

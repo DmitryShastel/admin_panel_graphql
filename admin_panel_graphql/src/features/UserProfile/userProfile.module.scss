@@ -1,11 +1,14 @@
 .container{
   height: 730px;
   width: 100%;
+  position: fixed;
 }
 
-.userProfileInfo{
+.userProfileInfo {
   height: 30%;
   width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .backUserList{
@@ -82,4 +85,5 @@
 .tabs{
   height: 70%;
   width: 100%;
+  overflow: hidden;
 }

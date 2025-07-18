@@ -19,7 +19,7 @@ type Props<Data extends object> = {
     callbackOpen: (userId: string, event: React.MouseEvent) => void
 }
 
-export const Sortable = <Data extends {id: string}>({columns, data, sortTypes, callbackOpen}) => {
+export const Sortable = <Data extends { id: string }>({columns, data, sortTypes, callbackOpen}) => {
     const {
         getTableProps,
         getTableBodyProps,
