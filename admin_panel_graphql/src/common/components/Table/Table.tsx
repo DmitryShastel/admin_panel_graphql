@@ -17,9 +17,16 @@ type Props<Data extends object> = {
     data: Data[],
     sortTypes: Record<string, SortByFn<Data>>,
     callbackOpen: (userId: string, event: React.MouseEvent) => void
+    showActionButton?: boolean
 }
 
-export const Sortable = <Data extends { id: string }>({columns, data, sortTypes, callbackOpen}) => {
+export const Sortable = <Data extends { id: string }>({
+                                                          columns,
+                                                          data,
+                                                          sortTypes,
+                                                          callbackOpen,
+                                                          showActionButton = true
+                                                      }) => {
     const {
         getTableProps,
         getTableBodyProps,
@@ -62,7 +69,7 @@ export const Sortable = <Data extends { id: string }>({columns, data, sortTypes,
                         <tr {...row.getRowProps()}>
                             {row.cells.map((cell, index) => (
                                 <td {...cell.getCellProps()}>
-                                    {index === row.cells.length - 1 ? (
+                                    {index === row.cells.length - 1 && showActionButton ? (
                                         <>
                                             {cell.render('Cell')}
                                             <button onClick={(e) => callbackOpen(row.original.id, e)}>

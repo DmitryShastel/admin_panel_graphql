@@ -8,6 +8,8 @@ import {useQuery} from "@apollo/client";
 import {useParams} from "next/navigation";
 import {Tabs} from "@/common/components/Tabs/Tabs";
 import {UploadedFoto} from "@/features/UserProfile/UploadedFoto/UploadedFoto";
+import {Payments} from "@/features/UserProfile/Payments/Payments";
+import {Followers} from "@/features/UserProfile/Followers/Followers";
 
 
 export const UserProfile = () => {
@@ -24,15 +26,17 @@ export const UserProfile = () => {
         {
             id: 'uploadedPhotos',
             label: 'Uploaded photos',
-            content: <><UploadedFoto/></>
+            content: <UploadedFoto/>
         },
         {
             id: 'Payments',
             label: 'Payments',
+            content: <Payments/>
         },
         {
             id: 'Followers',
             label: 'Followers',
+            content: <Followers/>
         },
         {
             id: 'Following',

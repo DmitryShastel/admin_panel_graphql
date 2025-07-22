@@ -8,7 +8,7 @@ import { useState } from "react";
 import { ManagementUserAction } from "@/features/UsersList/ManagementUserAction/ManagementUserAction";
 import { SearchSelect } from "@/features/SearchSelect";
 import { DeleteUserModal } from "@/features/UsersList/ManagementUserAction/DeleteUser/DeleteUserModal";
-import { columns, sortTypes } from "@/common/utils/utils";
+import {sortTypes, uploadedPhotosColumns} from "@/common/utils/utils";
 import { PaginationController } from "@/common/components/Pagination/PaginationController";
 
 export const UsersList = () => {
@@ -30,6 +30,7 @@ export const UsersList = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+    // console.log(paginatedUsers)
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
@@ -72,7 +73,7 @@ export const UsersList = () => {
                 ) : allUsers.length > 0 ? (
                     <>
                         <Sortable
-                            columns={columns}
+                            columns={uploadedPhotosColumns}
                             data={paginatedUsers}
                             sortTypes={sortTypes}
                             callbackOpen={handleOpenActionModal}

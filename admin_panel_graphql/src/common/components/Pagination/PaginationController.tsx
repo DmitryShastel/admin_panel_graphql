@@ -6,12 +6,14 @@ type PaginationControllerProps = {
     totalItems: number;
     defaultItemsPerPage?: number;
     onPageChange?: (pageNumber: number, itemsPerPage: number) => void;
+    onItemsPerPageChange?: (itemsPerPage: number) => void;
 };
 
 export const PaginationController = ({
                                          totalItems,
                                          defaultItemsPerPage = 8,
                                          onPageChange,
+                                         onItemsPerPageChange,
                                      }: PaginationControllerProps) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(defaultItemsPerPage);
@@ -24,8 +26,9 @@ export const PaginationController = ({
 
     const handleItemsPerPageChange = (newItemsPerPage: number) => {
         setItemsPerPage(newItemsPerPage);
-        setCurrentPage(1);
+        setCurrentPage(1); // Сбрасываем на первую страницу при изменении количества элементов
         onPageChange?.(1, newItemsPerPage);
+        onItemsPerPageChange?.(newItemsPerPage);
     };
 
     return (
@@ -35,6 +38,7 @@ export const PaginationController = ({
             itemsPerPage={itemsPerPage}
             onItemsPerPageChange={handleItemsPerPageChange}
             onPageChange={handlePageChange}
+            totalItems={totalItems}
         />
     );
 };
