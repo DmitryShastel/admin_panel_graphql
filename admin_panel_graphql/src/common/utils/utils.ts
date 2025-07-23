@@ -1,3 +1,5 @@
+import {useState} from "react";
+
 export const uploadedPhotosColumns = [
     {
         Header: 'User ID',
@@ -62,9 +64,44 @@ export const FollowersColumns = [
     },
 ]
 
+export const FollowingColumns = [
+    {
+        Header: 'User ID',
+        accessor: 'id',
+    },
+    {
+        Header: 'Profile link',
+        accessor: 'firstName',
+    },
+    {
+        Header: 'User name',
+        accessor: 'userName',
+    },
+    {
+        Header: 'Subscription Date',
+        accessor: 'subscriptionDate',
+    },
+]
+
 export const sortTypes = {
     string: (rowA, rowB, columnId, desc) => {
         const [a, b] = [rowA.values[columnId], rowB.values[columnId]] as [string, string];
         return a.localeCompare(b, 'en');
     }
+};
+
+export const usePagination = (initialPage = 1, initialItemsPerPage = 8) => {
+    const [currentPage, setCurrentPage] = useState(initialPage);
+    const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
+
+    return {
+        currentPage,
+        setCurrentPage,
+        itemsPerPage,
+        setItemsPerPage,
+        paginationVariables: {
+            pageNumber: currentPage,
+            pageSize: itemsPerPage
+        }
+    };
 };

@@ -1,11 +1,12 @@
-import styles from "./payments.module.scss"
+// import styles from "./payments.module.scss"
 import {Sortable} from "@/common/components/Table/Table";
-import {FollowersColumns, paymentsColumns, sortTypes, uploadedPhotosColumns} from "@/common/utils/utils";
+import {FollowersColumns, FollowingColumns, sortTypes} from "@/common/utils/utils";
 import {PaginationController} from "@/common/components/Pagination/PaginationController";
 import {GET_PAYMENTS} from "@/apollo/payments";
 import {useQuery} from "@apollo/client";
 import {useParams} from "next/navigation";
-import {useState} from "react";
+import React, {useState} from "react";
+import styles from "./../UploadedFoto/uploadedFoto.module.scss"
 
 
 export const Payments = () => {
@@ -34,31 +35,35 @@ export const Payments = () => {
 
 
     return (
-        <div className={styles.container}>
-            <div className={styles.table}>
+        // <div className={styles.container}>
+        <div>
+            {/*<div className={styles.table}>*/}
+            <div>
                 {tableData.length > 0 ? (
                     <Sortable
-                        columns={FollowersColumns}
+                        columns={FollowingColumns}
                         data={tableData}
-                        callbackOpen={() => {}}
+                        callbackOpen={() => {
+                        }}
                         sortTypes={sortTypes}
                         showActionButton={false}
                     />
                 ) : (
-                    <div className={styles.noFollowers}>
-                        This user does not have payments
+                    // <div className={styles.noFollowers}>
+                    <div>
+                        This user does not have following
                     </div>
                 )}
             </div>
             {tableData.length > 0 && (
-                <div className={styles.pagination}>
+                // <div className={styles.pagination}>
                     <PaginationController
                         totalItems={totalCount}
                         defaultItemsPerPage={itemsPerPage}
                         onPageChange={setCurrentPage}
                         onItemsPerPageChange={setItemsPerPage}
                     />
-                </div>
+                // </div>
             )}
         </div>
     );

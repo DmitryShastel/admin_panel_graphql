@@ -30,7 +30,6 @@ export const UsersList = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
-    // console.log(paginatedUsers)
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);

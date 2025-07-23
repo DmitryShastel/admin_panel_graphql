@@ -18,13 +18,11 @@ export const Tabs: React.FC<TabsProps> = ({ tabs = [], defaultTabId }) => {
     const searchParams = useSearchParams();
     const [activeTab, setActiveTab] = useState(defaultTabId || tabs[0]?.id || '');
 
-    // Синхронизация с URL при загрузке
     useEffect(() => {
         const tabFromUrl = searchParams.get('tab');
         if (tabFromUrl && tabs.some(tab => tab.id === tabFromUrl)) {
             setActiveTab(tabFromUrl);
         } else {
-            // Если нет параметра в URL, устанавливаем дефолтную вкладку
             const newSearchParams = new URLSearchParams(searchParams.toString());
             newSearchParams.set('tab', defaultTabId || tabs[0]?.id || '');
             router.replace(`?${newSearchParams.toString()}`, { scroll: false });
@@ -33,7 +31,6 @@ export const Tabs: React.FC<TabsProps> = ({ tabs = [], defaultTabId }) => {
 
     const handleTabChange = (tabId: string) => {
         setActiveTab(tabId);
-        // Обновляем URL без перезагрузки страницы
         const newSearchParams = new URLSearchParams(searchParams.toString());
         newSearchParams.set('tab', tabId);
         router.replace(`?${newSearchParams.toString()}`, { scroll: false });

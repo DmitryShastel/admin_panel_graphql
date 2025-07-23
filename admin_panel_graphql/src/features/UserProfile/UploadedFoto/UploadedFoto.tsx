@@ -16,7 +16,7 @@ export const UploadedFoto = () => {
 
     if (userAvatars.length === 0) {
         return (
-            <div className={styles.noPhotos}>
+            <div className={styles.noData}>
                 This user does not have photos
             </div>
         );
@@ -34,10 +34,7 @@ export const UploadedFoto = () => {
                     <div key={rowIndex} className={styles.row}>
                         {row.map((avatar, index) => (
                             <div key={`${rowIndex}-${index}`} className={styles.imageCell}>
-                                {avatar?.url
-                                    ? <Image src={avatar.url} width={180} height={180} alt=""/>
-                                    : <div>This user does not have photos</div>
-                                }
+                                {avatar?.url && <Image src={avatar.url} width={180} height={180} alt=""/>}
                             </div>
                         ))}
                     </div>

@@ -10,6 +10,7 @@ import {Tabs} from "@/common/components/Tabs/Tabs";
 import {UploadedFoto} from "@/features/UserProfile/UploadedFoto/UploadedFoto";
 import {Payments} from "@/features/UserProfile/Payments/Payments";
 import {Followers} from "@/features/UserProfile/Followers/Followers";
+import {Following} from "@/features/UserProfile/Following/Following";
 
 
 export const UserProfile = () => {
@@ -41,6 +42,7 @@ export const UserProfile = () => {
         {
             id: 'Following',
             label: 'Following',
+            content: <Following/>
         },
     ];
 
