@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import styles from "@/features/UserProfile/Followers/followers.module.scss";
+import styles from "@/features/UserProfile/UploadedFoto/uploadedFoto.module.scss";
 import {Sortable} from "@/common/components/Table/Table";
 import {FollowingColumns, sortTypes, usePagination} from "@/common/utils/utils";
 import {PaginationController} from "@/common/components/Pagination/PaginationController";
@@ -11,21 +10,18 @@ export const Following = () => {
 
     const params = useParams()
     const userId = parseInt(params.userId as string, 10);
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const [itemsPerPage, setItemsPerPage] = useState(8);
+
     const {
-        // currentPage,
         setCurrentPage,
         itemsPerPage,
         setItemsPerPage,
         paginationVariables
     } = usePagination();
 
-    const {data} = useQuery(GET_FOLLOWING, {
+
+    const {data, loading} = useQuery(GET_FOLLOWING, {
         variables: {
             userId: userId,
-            // pageNumber: currentPage,
-            // pageSize: itemsPerPage
             ...paginationVariables
         }
     });
@@ -40,9 +36,13 @@ export const Following = () => {
 
     const totalCount = data?.getFollowing?.totalCount || 0;
 
+    if(loading){
+        return <div>Loading following...</div>;
+    }
+
     return (
-        <div className={styles.container}>
-            <div className={styles.table}>
+        <div>
+            <div>
                 {tableData.length > 0 ? (
                     <Sortable
                         columns={FollowingColumns}
@@ -53,20 +53,18 @@ export const Following = () => {
                         showActionButton={false}
                     />
                 ) : (
-                    <div className={styles.noFollowers}>
+                    <div className={styles.noData}>
                         This user does not have following
                     </div>
                 )}
             </div>
             {tableData.length > 0 && (
-                <div className={styles.pagination}>
-                    <PaginationController
-                        totalItems={totalCount}
-                        defaultItemsPerPage={itemsPerPage}
-                        onPageChange={setCurrentPage}
-                        onItemsPerPageChange={setItemsPerPage}
-                    />
-                </div>
+                <PaginationController
+                    totalItems={totalCount}
+                    defaultItemsPerPage={itemsPerPage}
+                    onPageChange={setCurrentPage}
+                    onItemsPerPageChange={setItemsPerPage}
+                />
             )}
         </div>
     );

@@ -1,40 +1,46 @@
-import styles from "@/features/UserProfile/Followers/followers.module.scss";
+import styles from "@/features/UserProfile/UploadedFoto/uploadedFoto.module.scss";
 import {Sortable} from "@/common/components/Table/Table";
-import {FollowersColumns, paymentsColumns, sortTypes} from "@/common/utils/utils";
+import {FollowersColumns, sortTypes, usePagination} from "@/common/utils/utils";
 import {PaginationController} from "@/common/components/Pagination/PaginationController";
 import {useParams} from "next/navigation";
 import {GET_FOLLOWERS} from "@/apollo/followers";
 import {useQuery} from "@apollo/client";
-import {useState} from "react";
+import React from "react";
 
 export const Followers = () => {
 
     const params = useParams()
     const userId = parseInt(params.userId as string, 10);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(8);
-    const {data} = useQuery(GET_FOLLOWERS,
+    const {
+        setCurrentPage,
+        itemsPerPage,
+        setItemsPerPage,
+        paginationVariables
+    } = usePagination();
+    const {data, loading} = useQuery(GET_FOLLOWERS,
         {
             variables: {
                 userId: userId,
-                pageNumber: currentPage,
-                pageSize: itemsPerPage
+                ...paginationVariables
             }
         })
 
     const tableData = data?.getFollowers?.items.map(follower => ({
-        id: follower.id,
-        userId: follower.userId,
-        profileLink: `/profile/${follower.userId}`,
-        userName: follower.userName || `${follower.firstName} ${follower.lastName}`,
-        subscriptionDate: new Date(follower.createdAt).toLocaleDateString()
+        id: follower.userId,
+        userName: follower.userName || "Unknown User",
+        firstName: follower.firstName || "User doesn't have link",
+        subscriptionDate: follower.createdAt
     })) || [];
 
     const totalCount = data?.getFollowers?.totalCount || 0;
 
+    if(loading){
+        return <div>Loading followers...</div>;
+    }
+
     return (
-        <div className={styles.container}>
-            <div className={styles.table}>
+        <div>
+            <div>
                 {tableData.length > 0 ? (
                     <Sortable
                         columns={FollowersColumns}
@@ -44,20 +50,18 @@ export const Followers = () => {
                         showActionButton={false}
                     />
                 ) : (
-                    <div className={styles.noFollowers}>
+                    <div className={styles.noData}>
                         This user does not have followers
                     </div>
                 )}
             </div>
             {tableData.length > 0 && (
-                <div className={styles.pagination}>
                     <PaginationController
                         totalItems={totalCount}
                         defaultItemsPerPage={itemsPerPage}
                         onPageChange={setCurrentPage}
                         onItemsPerPageChange={setItemsPerPage}
                     />
-                </div>
             )}
         </div>
     );

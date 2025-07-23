@@ -52,15 +52,15 @@ export const FollowersColumns = [
     },
     {
         Header: 'Profile link',
-        accessor: 'profile.link',
+        accessor: 'firstName',
     },
     {
         Header: 'User name',
-        accessor: 'user.name',
+        accessor: 'userName',
     },
     {
         Header: 'Subscription Date',
-        accessor: 'subscription.type',
+        accessor: 'subscriptionDate',
     },
 ]
 
