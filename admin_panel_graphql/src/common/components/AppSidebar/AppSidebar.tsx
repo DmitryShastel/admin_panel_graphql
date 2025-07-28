@@ -22,8 +22,8 @@ export const AppSidebar = () => {
                             <span className={styles.notMobile}>Users list</span>
                         </Link>
                     </li>
-                    <li className={`${styles.item} ${pathname === '/' ? styles.itemActive : ''}`}>
-                        <Link className={styles.link} href={'/'}>
+                    <li className={`${styles.item} ${pathname === '/statistics' ? styles.itemActive : ''}`}>
+                        <Link className={styles.link} href={'/statistics'}>
                             <Image src={tradingUp} width={24} height={24} alt=""/>
                             <span className={styles.notMobile}>Statistics</span>
                         </Link>
