@@ -1,9 +1,11 @@
-import {Select} from "@/common/components/Select/Select";
+'use client'
+import {BanUser} from "@/features/UsersList/BanUser/BanUser";
 
 const StatisticsPage = () => {
+
     return (
         <div>
-            {/*<Select/>*/}
+            <BanUser/>
         </div>
     );
 };

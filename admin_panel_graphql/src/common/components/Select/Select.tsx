@@ -1,28 +1,35 @@
 'use client'
-import {useState} from "react";
-import {Dropdown, DropdownChangeEvent} from 'primereact/dropdown';
 import style from './select.module.scss'
 
-interface Props {
-    name: string;
+type Options = {
+    label: string
+    value: string
 }
 
-export function Select({items, children}: Props) {
-    const [selectedCity, setSelectedCity] = useState<items | null>(null);
+type Props = {
+    options: Options[]
+    value: string
+    onChangeCallback: (e: any) => void
+}
+
+
+export const Select = ({options, value, onChangeCallback}: Props) => {
 
     return (
-        <div className={style.container}>
-                <Dropdown value={selectedCity}
-                          className={style.dropdown}
-                          onChange={(e: DropdownChangeEvent) => setSelectedCity(e.value)}
-                          options={items}
-                          optionLabel="name"
-                          placeholder="Reason for ban"
-                          checkmark={true}
-                          highlightOnSelect={false}
-                />
+        <div>
+            <select
+                className={style.select}
+                onChange={onChangeCallback}
+                value={value}
+            >
+                <option value="" disabled hidden>
+                    Reason for ban
+                </option>
+                {options.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+            </select>
         </div>
-    )
-}
-
+    );
+};
 
