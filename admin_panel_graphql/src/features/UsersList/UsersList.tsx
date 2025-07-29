@@ -10,6 +10,7 @@ import { SearchSelect } from "@/features/SearchSelect";
 import { DeleteUserModal } from "@/features/UsersList/ManagementUserAction/DeleteUser/DeleteUserModal";
 import {sortTypes, uploadedPhotosColumns} from "@/common/utils/utils";
 import { PaginationController } from "@/common/components/Pagination/PaginationController";
+import {BanUser} from "@/features/UsersList/BanUser/BanUser";
 
 export const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,8 +18,9 @@ export const UsersList = () => {
     const [openActionModal, setOpenActionModal] = useState<string | null>(null);
     const [modalPosition, setModalPosition] = useState({top: 0, left: 0});
     const [searchTerm, setSearchTerm] = useState('');
-    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [openBanModal, setOpenBanModal] = useState(false);
 
     const {data, loading} = useQuery(GET_USERS, {variables: {pageSize: 100}});
     const allUsers = data?.getUsers?.users || [];
@@ -60,6 +62,12 @@ export const UsersList = () => {
         setSelectedUserId(userId);
     };
 
+    const handleOpenBanModal = (userId: number | null) => {
+        setOpenBanModal(true);
+        setOpenActionModal(null);
+        setSelectedUserId(userId);
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.searchBar}>
@@ -96,6 +104,7 @@ export const UsersList = () => {
                                 const userToDelete = paginatedUsers.find(user => user.id === openActionModal);
                                 handleOpenDeleteModal(userToDelete?.id || null);
                             }}
+                            openBanModal={() => handleOpenBanModal(selectedUserId)}
                             userId={selectedUserId}
                         />
                     </div>
@@ -105,6 +114,13 @@ export const UsersList = () => {
                 <DeleteUserModal
                     open={openDeleteModal}
                     onClose={() => setOpenDeleteModal(false)}
+                    userId={selectedUserId}
+                />
+            )}
+            {openBanModal && (
+                <BanUser
+                    open={openBanModal}
+                    onClose={() => setOpenBanModal(false)}
                     userId={selectedUserId}
                 />
             )}

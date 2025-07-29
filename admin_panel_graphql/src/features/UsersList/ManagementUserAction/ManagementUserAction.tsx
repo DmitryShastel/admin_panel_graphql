@@ -8,9 +8,10 @@ import Link from "next/link";
 type Props = {
     openDeleteModal: () => void
     userId: number | string | null;
+    openBanModal: () => void
 }
 
-export const ManagementUserAction = ({openDeleteModal, userId}: Props) => {
+export const ManagementUserAction = ({openDeleteModal, userId, openBanModal}: Props) => {
 
 
     return (
@@ -21,7 +22,7 @@ export const ManagementUserAction = ({openDeleteModal, userId}: Props) => {
             </div>
             <div className={styles.banUser}>
                 <Image src={block} width={24} height={24} alt=""/>
-                <button>Ban in the system</button>
+                <button onClick={openBanModal}>Ban in the system</button>
             </div>
             <div className={styles.moreInformation}>
                 <Image src={moreHorizontalOutline} width={24} height={24} alt=""/>

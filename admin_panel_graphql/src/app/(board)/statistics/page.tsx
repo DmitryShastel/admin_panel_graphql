@@ -5,7 +5,7 @@ const StatisticsPage = () => {
 
     return (
         <div>
-            <BanUser/>
+            {/*<BanUser/>*/}
         </div>
     );
 };
