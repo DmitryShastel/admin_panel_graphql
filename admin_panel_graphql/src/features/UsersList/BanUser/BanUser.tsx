@@ -3,8 +3,9 @@ import {RadixModal} from "@/common/components/Modal/RadixModal";
 import s from "./banUser.module.scss";
 import {Select} from "@/common/components/Select/Select";
 import {useState} from "react";
-import {GET_USERS} from "@/apollo/user";
-import {useQuery} from "@apollo/client";
+import {GET_USERS} from "@/apollo/queries/getUser";
+import {useMutation, useQuery} from "@apollo/client";
+import {BAN_USER} from "@/apollo/mutation/banUser";
 
 type Props = {
     open: boolean
@@ -13,10 +14,31 @@ type Props = {
 }
 
 export const BanUser = ({open, onClose, userId}: Props) => {
+    const [banUserMutation] = useMutation(BAN_USER, {
+        refetchQueries: [
+            { query: GET_USERS, variables: { pageSize: 100 } }
+        ],
+    });
     const [value, setValue] = useState('')
 
     const {data} = useQuery(GET_USERS, {variables: {pageSize: 100}});
     const userName = data?.getUsers?.users.find(user => user.id === userId)?.userName || 'this use'
+
+    const handleBan = async () => {
+        if (!userId || !value) return;
+
+        try {
+            const { data } = await banUserMutation({
+                variables: {
+                    userId: Number(userId),
+                    banReason: value
+                },
+            });
+            onClose()
+        } catch (error) {
+            console.error("Error banning user:", error);
+        }
+    };
 
     const options = [
         {label: 'Bad behavior', value: 'Bad behavior'},
@@ -40,7 +62,7 @@ export const BanUser = ({open, onClose, userId}: Props) => {
                 </div>
                 <div className={s.buttons}>
                     <button onClick={onClose}>No</button>
-                    <button onClick={() => {}}>Yes</button>
+                    <button onClick={handleBan}>Yes</button>
                 </div>
             </div>
         </RadixModal>

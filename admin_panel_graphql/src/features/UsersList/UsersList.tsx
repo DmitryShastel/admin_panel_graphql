@@ -1,29 +1,46 @@
 'use client'
 import styles from "./usersList.module.scss";
-import { SearchInput } from "@/common/components/SearchInput/Search";
-import { Sortable } from "@/common/components/Table/Table";
-import { useQuery } from "@apollo/client";
-import { GET_USERS } from "@/apollo/user";
-import { useState } from "react";
-import { ManagementUserAction } from "@/features/UsersList/ManagementUserAction/ManagementUserAction";
-import { SearchSelect } from "@/features/SearchSelect";
-import { DeleteUserModal } from "@/features/UsersList/ManagementUserAction/DeleteUser/DeleteUserModal";
+import {SearchInput} from "@/common/components/SearchInput/Search";
+import {Sortable} from "@/common/components/Table/Table";
+import {useQuery} from "@apollo/client";
+import {GET_USERS} from "@/apollo/queries/getUser";
+import {useState} from "react";
+import {ManagementUserAction} from "@/features/UsersList/ManagementUserAction/ManagementUserAction";
+import {SearchSelect} from "@/features/SearchSelect";
+import {DeleteUserModal} from "@/features/UsersList/ManagementUserAction/DeleteUser/DeleteUserModal";
 import {sortTypes, uploadedPhotosColumns} from "@/common/utils/utils";
-import { PaginationController } from "@/common/components/Pagination/PaginationController";
+import {PaginationController} from "@/common/components/Pagination/PaginationController";
 import {BanUser} from "@/features/UsersList/BanUser/BanUser";
+import {UnBanUser} from "@/features/UsersList/UnBanUser/UnBanUser";
+import {useUserActions} from "@/common/hooks/useUserActions";
+import {useUserModals} from "@/common/hooks/useUserModals";
 
 export const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(8);
-    const [openActionModal, setOpenActionModal] = useState<string | null>(null);
-    const [modalPosition, setModalPosition] = useState({top: 0, left: 0});
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-    const [openDeleteModal, setOpenDeleteModal] = useState(false);
-    const [openBanModal, setOpenBanModal] = useState(false);
+
+    const {
+        openActionModal,
+        modalPosition,
+        selectedUserId,
+        handleOpenActionModal,
+    } = useUserActions()
+
+    const {
+        openBanModal,
+        handleOpenBanModal,
+        openUnbanModal,
+        handleOpenUnbanModal,
+        openDeleteModal,
+        handleOpenDeleteModal,
+        closeAllModals
+    } = useUserModals()
 
     const {data, loading} = useQuery(GET_USERS, {variables: {pageSize: 100}});
     const allUsers = data?.getUsers?.users || [];
+    const isBanned = data?.getUsers?.users.find(user => user.id === selectedUserId)?.userBan !== null;
+
 
     const filteredUsers = allUsers.filter(user =>
         user.userName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -46,27 +63,6 @@ export const UsersList = () => {
         setCurrentPage(1);
     };
 
-    const handleOpenActionModal = (userId: any, event: React.MouseEvent) => {
-        const buttonRect = event.currentTarget.getBoundingClientRect();
-        setModalPosition({
-            top: buttonRect.bottom + window.scrollY,
-            left: buttonRect.left + window.scrollX
-        });
-        setOpenActionModal(openActionModal === userId ? null : userId);
-        setSelectedUserId(userId);
-    };
-
-    const handleOpenDeleteModal = (userId: number | null) => {
-        setOpenDeleteModal(true);
-        setOpenActionModal(null);
-        setSelectedUserId(userId);
-    };
-
-    const handleOpenBanModal = (userId: number | null) => {
-        setOpenBanModal(true);
-        setOpenActionModal(null);
-        setSelectedUserId(userId);
-    };
 
     return (
         <div className={styles.container}>
@@ -106,6 +102,8 @@ export const UsersList = () => {
                             }}
                             openBanModal={() => handleOpenBanModal(selectedUserId)}
                             userId={selectedUserId}
+                            openUnbanModal={() => handleOpenUnbanModal(selectedUserId)}
+                            isBanned={isBanned}
                         />
                     </div>
                 )}
@@ -113,14 +111,21 @@ export const UsersList = () => {
             {openDeleteModal && (
                 <DeleteUserModal
                     open={openDeleteModal}
-                    onClose={() => setOpenDeleteModal(false)}
+                    onClose={() => closeAllModals()}
                     userId={selectedUserId}
                 />
             )}
             {openBanModal && (
                 <BanUser
                     open={openBanModal}
-                    onClose={() => setOpenBanModal(false)}
+                    onClose={() => closeAllModals()}
+                    userId={selectedUserId}
+                />
+            )}
+            {openUnbanModal && (
+                <UnBanUser
+                    open={openUnbanModal}
+                    onClose={() => closeAllModals()}
                     userId={selectedUserId}
                 />
             )}

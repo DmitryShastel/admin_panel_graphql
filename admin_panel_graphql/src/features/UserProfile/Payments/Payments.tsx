@@ -1,7 +1,7 @@
 import {Sortable} from "@/common/components/Table/Table";
 import {paymentsColumns, sortTypes, usePagination} from "@/common/utils/utils";
 import {PaginationController} from "@/common/components/Pagination/PaginationController";
-import {GET_PAYMENTS} from "@/apollo/payments";
+import {GET_PAYMENTS} from "@/apollo/queries/payments";
 import {useQuery} from "@apollo/client";
 import {useParams} from "next/navigation";
 import React, {useState} from "react";

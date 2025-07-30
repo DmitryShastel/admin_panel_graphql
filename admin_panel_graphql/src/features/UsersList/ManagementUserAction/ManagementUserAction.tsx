@@ -9,10 +9,17 @@ type Props = {
     openDeleteModal: () => void
     userId: number | string | null;
     openBanModal: () => void
+    openUnbanModal: () => void
+    isBanned: boolean
 }
 
-export const ManagementUserAction = ({openDeleteModal, userId, openBanModal}: Props) => {
-
+export const ManagementUserAction = ({
+                                         openDeleteModal,
+                                         userId,
+                                         openBanModal,
+                                         isBanned,
+                                         openUnbanModal
+                                     }: Props) => {
 
     return (
         <div className={styles.container}>
@@ -20,10 +27,17 @@ export const ManagementUserAction = ({openDeleteModal, userId, openBanModal}: Pr
                 <Image src={personRemoveOutline} width={24} height={24} alt=""/>
                 <button onClick={() => openDeleteModal()}>Delete User</button>
             </div>
-            <div className={styles.banUser}>
-                <Image src={block} width={24} height={24} alt=""/>
-                <button onClick={openBanModal}>Ban in the system</button>
-            </div>
+            {isBanned ? (
+                <div className={styles.banUser}>
+                    <Image src={block} width={24} height={24} alt=""/>
+                    <button onClick={openUnbanModal}>Un-ban user</button>
+                </div>
+            ) : (
+                <div className={styles.banUser}>
+                    <Image src={block} width={24} height={24} alt=""/>
+                    <button onClick={openBanModal}>Ban in the system</button>
+                </div>
+            )}
             <div className={styles.moreInformation}>
                 <Image src={moreHorizontalOutline} width={24} height={24} alt=""/>
                 <Link href={`/usersList/${userId}`}>

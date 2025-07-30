@@ -19,6 +19,10 @@ export const GET_USER = gql`
                     fileSize
                 }
             }
+            userBan {
+                reason
+                createdAt
+            }
         }
     }
 `
@@ -34,15 +38,13 @@ export const GET_USERS = gql`
                     userName
                     createdAt
                 }
+                userBan {
+                    reason
+                    createdAt
+                }
             }
         }
     }
 `
 
-
-export const DELETE_USER = gql`
-    mutation removeUser($id: Int!) {
-        removeUser(userId: $id)
-    }
-`
 

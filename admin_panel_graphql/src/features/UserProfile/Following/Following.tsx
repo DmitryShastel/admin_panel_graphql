@@ -4,7 +4,7 @@ import {FollowingColumns, sortTypes, usePagination} from "@/common/utils/utils";
 import {PaginationController} from "@/common/components/Pagination/PaginationController";
 import {useParams} from "next/navigation";
 import {useQuery} from "@apollo/client";
-import {GET_FOLLOWING} from "@/apollo/following";
+import {GET_FOLLOWING} from "@/apollo/queries/following";
 
 export const Following = () => {
 

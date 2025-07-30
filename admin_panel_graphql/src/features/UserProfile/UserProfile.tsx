@@ -3,7 +3,7 @@ import style from "./userProfile.module.scss"
 import arrowBackOutline from "@/assets/svg/arrowBackOutline.svg";
 import resizeImage from "@/assets/svg/resizeImage.png";
 import Link from "next/link";
-import {GET_USER} from "@/apollo/user";
+import {GET_USER} from "@/apollo/queries/getUser";
 import {useQuery} from "@apollo/client";
 import {useParams} from "next/navigation";
 import {Tabs} from "@/common/components/Tabs/Tabs";

@@ -1,6 +1,6 @@
 import styles from "./uploadedFoto.module.scss"
 import Image from 'next/image';
-import {GET_USER} from "@/apollo/user";
+import {GET_USER} from "@/apollo/queries/getUser";
 import {useParams} from "next/navigation";
 import {useQuery} from "@apollo/client";
 import React from "react";

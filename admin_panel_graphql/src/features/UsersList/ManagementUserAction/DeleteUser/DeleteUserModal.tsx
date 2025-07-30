@@ -1,7 +1,8 @@
 import {RadixModal} from "@/common/components/Modal/RadixModal";
 import s from "./deleteUserModal.module.scss"
 import {useMutation, useQuery} from "@apollo/client";
-import {DELETE_USER, GET_USERS} from "@/apollo/user";
+import {GET_USERS} from "@/apollo/queries/getUser";
+import {DELETE_USER} from "@/apollo/mutation/deleteUser";
 
 type Props = {
     open: boolean
@@ -21,6 +22,8 @@ export const DeleteUserModal = ({open, onClose, userId}: Props) => {
         },
         onCompleted: onClose
     });
+
+    console.log(userId)
 
     return (
         <RadixModal open={open} onClose={onClose} modalTitle={'Delete user'}>

@@ -4,6 +4,7 @@ import {Column, SortByFn, useSortBy, useTable} from 'react-table';
 import Image from 'next/image';
 import styles from './table.module.scss'
 import moreHorizontalOutline from "@/assets/svg/moreHorizontalOutline.svg";
+import block from "@/assets/svg/block.svg";
 
 type DefaultColumn = {
     id: string,
@@ -20,13 +21,19 @@ type Props<Data extends object> = {
     showActionButton?: boolean
 }
 
-export const Sortable = <Data extends { id: string }>({
-                                                          columns,
-                                                          data,
-                                                          sortTypes,
-                                                          callbackOpen,
-                                                          showActionButton = true
-                                                      }) => {
+export const Sortable = <Data extends {
+    id: string,
+    userBan?: {
+        reason: string,
+        createdAt: string
+    } | null
+}>({
+       columns,
+       data,
+       sortTypes,
+       callbackOpen,
+       showActionButton = true
+   }) => {
     const {
         getTableProps,
         getTableBodyProps,
@@ -34,6 +41,7 @@ export const Sortable = <Data extends { id: string }>({
         rows,
         prepareRow,
     } = useTable({columns, data, sortTypes}, useSortBy);
+
 
     return (
         <div className={styles.tableWrapper}>
@@ -69,6 +77,16 @@ export const Sortable = <Data extends { id: string }>({
                         <tr {...row.getRowProps()}>
                             {row.cells.map((cell, index) => (
                                 <td {...cell.getCellProps()}>
+                                    {index === 0 && row.original.userBan && (
+                                        <Image
+                                            src={block}
+                                            width={16}
+                                            height={16}
+                                            alt="Banned"
+                                            title={`Banned for: ${row.original.userBan.reason}`}
+                                            style={{marginRight: '8px'}}
+                                        />
+                                    )}
                                     {index === row.cells.length - 1 && showActionButton ? (
                                         <>
                                             {cell.render('Cell')}

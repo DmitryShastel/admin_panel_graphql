@@ -3,7 +3,7 @@ import {Sortable} from "@/common/components/Table/Table";
 import {FollowersColumns, sortTypes, usePagination} from "@/common/utils/utils";
 import {PaginationController} from "@/common/components/Pagination/PaginationController";
 import {useParams} from "next/navigation";
-import {GET_FOLLOWERS} from "@/apollo/followers";
+import {GET_FOLLOWERS} from "@/apollo/queries/followers";
 import {useQuery} from "@apollo/client";
 import React from "react";
 
