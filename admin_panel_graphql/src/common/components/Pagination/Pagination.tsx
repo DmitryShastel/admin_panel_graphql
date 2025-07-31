@@ -20,7 +20,7 @@ export const Pagination = ({
                                totalItems
                            }: PaginationProps) => {
     const pageNumbers = [];
-    const itemsPerPageOptions = [1, 2, 5, 8, 10, 15, 20, 50];
+    const itemsPerPageOptions = [1, 3, 5, 8];
 
     // Генерация номеров страниц с многоточиями
     for (let i = 1; i <= totalPages; i++) {

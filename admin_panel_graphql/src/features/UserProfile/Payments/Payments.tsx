@@ -4,7 +4,6 @@ import {PaginationController} from "@/common/components/Pagination/PaginationCon
 import {GET_PAYMENTS} from "@/apollo/queries/payments";
 import {useQuery} from "@apollo/client";
 import {useParams} from "next/navigation";
-import React, {useState} from "react";
 import styles from "./../UploadedFoto/uploadedFoto.module.scss"
 
 

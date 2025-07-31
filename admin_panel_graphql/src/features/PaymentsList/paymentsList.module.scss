@@ -1,0 +1,50 @@
+.container {
+  width: 970px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableWrapper {
+  width: 100%;
+  min-height: 370px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow: hidden;
+
+  .table {
+    border: none;
+
+    thead tr th {
+      border: none;
+      background: transparent;
+    }
+
+    tbody tr td {
+      border: none;
+    }
+  }
+}
+
+.message {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  margin: auto;
+}
+
+.pagination {}
+
+.userCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}

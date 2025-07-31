@@ -1,3 +1,4 @@
+'use client'
 import {useState} from "react";
 
 export const uploadedPhotosColumns = [
@@ -42,6 +43,30 @@ export const paymentsColumns = [
     {
         Header: 'Payment Type',
         accessor: 'paymentType'
+    }
+];
+
+export const paymentsListColumns = [
+    {
+        Header: 'Full Name',
+        accessor: 'userName',
+    },
+    {
+        Header: 'Date added',
+        accessor: 'createdAt',
+        Cell: ({ value }) => new Date(value).toLocaleDateString()
+    },
+    {
+        Header: 'Amount, $',
+        accessor: 'amount',
+    },
+    {
+        Header: 'Subscription',
+        accessor: 'type'
+    },
+    {
+        Header: 'Payment Method',
+        accessor: 'paymentMethod'
     }
 ];
 
